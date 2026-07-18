@@ -1,0 +1,9 @@
+# Build files
+build/
+*.exe
+*.obj
+*.o
+
+# IDE files
+.vscode/
+.idea/
