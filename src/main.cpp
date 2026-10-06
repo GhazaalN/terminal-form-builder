@@ -3,10 +3,30 @@
 #include <string.h>
 
 #include <stdlib.h>
+#include <iostream>
+#include <string>
+#include <cstring>
 
 #include <windows.h>
 
 #include <conio.h>
+
+void read_command(char *&buffer) {
+    std::string line;
+    if (!std::getline(std::cin, line)) {
+        std::exit(0);
+    }
+
+    char *replacement = static_cast<char *>(std::malloc(line.size() + 1));
+    if (replacement == nullptr) {
+        std::exit(1);
+    }
+
+    std::memcpy(replacement, line.c_str(), line.size() + 1);
+    std::free(buffer);
+    buffer = replacement;
+}
+
 
 #define VIEW_ROWS 21
 #define VIEW_COLS 120
@@ -499,7 +519,7 @@ void edit_form(Form f) {
     //loop until cancel is clicked.
     while (1) {
         printf("> add | edit | remove | cancel | save:");
-        gets(command);
+        read_command(command);
         if (strcmpi(command, "edit") == 0 || strcmpi(command, "remove") == 0) {
             int i = 0;
             //loop on forms components .
@@ -518,7 +538,7 @@ void edit_form(Form f) {
                     printf("value:%s\n", f.components[i].value);
                 }
                 printf("command> edit | next | previous | remove | cancel | save :");
-                gets(command);
+                read_command(command);
                 //edit current component
                 if (strcmpi(command, "edit") == 0) {
                     print_view(f, 1);
@@ -550,7 +570,7 @@ void edit_form(Form f) {
                         if (f.components[i].type == 't')
                             getchar();
                         printf("command> cancel | save :");
-                        gets(command);
+                        read_command(command);
                         if (strcmpi(command, "cancel") == 0) {
                             break;
                         } else if (strcmpi(command, "save") == 0) {
@@ -597,7 +617,7 @@ void edit_form(Form f) {
             //add a new component to form using create_form() function.
         else if (strcmpi(command, "add") == 0) {
             printf("> component type (label | textbox | button):");
-            gets(command);
+            read_command(command);
             f.number_of_components++;
             f.components = (Component * ) realloc(f.components, f.number_of_components * \
         sizeof(Component));
@@ -805,7 +825,7 @@ void find_forms(Form f) {
     while (1) {
         print_view(forms[k], 1);
         printf("form %d of %d \n> edit | remove | next | previous | cancel :", k + 1, number_of_forms);
-        gets(command);
+        read_command(command);
         //edit current form data (textboxes).
         if (strcmpi(command, "edit") == 0) {
             int i = 0;
@@ -836,7 +856,7 @@ void find_forms(Form f) {
                 printf("x:%d y:%d width:%d height:%d\n", forms[k].components[i].x, forms[k].components[i].y, \
           forms[k].components[i].width, forms[k].components[i].height);
                 printf("Command> edit | next | previous | ok | exit :");
-                gets(command);
+                read_command(command);
                 //edit current component (textbox) of current form .
                 if (strcmpi(command, "edit") == 0) {
                     p = fopen(name, "a+");
@@ -1261,7 +1281,7 @@ void run_form(Form f) {
         printf("x:%d y:%d width:%d height:%d\n", f.components[i].x, f.components[i].y, \
       f.components[i].width, f.components[i].height);
         printf("Command> add | find | fill | next | previous | exit :");
-        gets(command);
+        read_command(command);
         //save filled form using save_form_data() function.
         if (strcmpi(command, "add") == 0) {
             save_form_data(f);
@@ -1313,7 +1333,7 @@ int main() {
         print_view(f, 0);
         printf("create | load | exit:");
         //input command
-        gets(command);
+        read_command(command);
         if (strcmpi(command, "exit") != 0) {
             print_view(f, 1);
         }
