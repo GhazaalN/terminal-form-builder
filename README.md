@@ -1,21 +1,30 @@
 # Terminal Form Builder
 
-A C++ terminal-based UI project for creating and rendering simple forms using customizable components.
+A C++ terminal application for creating, editing, saving, and running simple text-based forms.
 
 ## Features
 
-- Create terminal UI components
-- Position components using x/y coordinates
-- Render components in the console
-- Manage component ordering
-- Simple form visualization
+- Create labels, textboxes, and buttons
+- Position and render components in the console
+- Save, load, edit, and remove forms
+- Enter and save form data
 
-## Technologies
+## Requirements
 
-- C++
-- CMake
-- Windows Console API
-- Data Structures
+- Windows
+- CMake 3.21 or newer
+- A C++14 compiler (for example, Visual Studio Build Tools)
+
+The application uses Windows-specific console headers and is not currently portable to Linux or macOS.
+
+## Build
+
+Run these commands from a Windows Developer PowerShell or a terminal configured with a C++ compiler:
+
+```powershell
+cmake -S . -B build
+cmake --build build --config Release
+```
 
 ## Project Structure
 
@@ -25,19 +34,9 @@ terminal-form-builder/
 │   └── main.cpp
 ├── CMakeLists.txt
 ├── README.md
-├── LICENSE
-└── .gitignore
+└── LICENSE
 ```
 
-## Build
+## Scope
 
-Using CMake:
-
-```bash
-cmake -S . -B build
-cmake --build build
-```
-
-## Purpose
-
-This project was developed to practice C++ programming, memory management, data structures, and terminal-based user interface design.
+This is an educational project for practicing C++, basic data structures, console input, and form rendering. It is not intended for handling sensitive data or production use.
