@@ -253,7 +253,7 @@ void save_form(Form f) {
                     fname[i - 2] = '\0';
                     int a;
                     i = 1;
-                    if (strcmpi(f.name, fname) == 0) {
+                    if (_stricmp(f.name, fname) == 0) {
                         name_already_exists = true;
                         free(f.name);
                         free(fname);
@@ -336,7 +336,7 @@ Form load_form() {
                     fname[i - 2] = '\0';
                     int a;
                     i = 1;
-                    if (strcmpi(name, fname) == 0) {
+                    if (_stricmp(name, fname) == 0) {
                         form_found = true;
                         free(fname);
                         fclose(p);
@@ -372,7 +372,7 @@ Form load_form() {
             line = (char * ) realloc(line, i * sizeof(char));
             line[i - 2] = '\0';
             i = 1;
-            if (strcmpi(name, line) == 0) {
+            if (_stricmp(name, line) == 0) {
                 fscanf(p, "%d\n", & f.number_of_components);
                 free(line);
                 line = (char * ) malloc(sizeof(char));
@@ -464,7 +464,7 @@ void save_edited_form(Form f) {
             line[i - 2] = '\0';
             i = 1;
             //find recently edited form
-            if (strcmpi(f.name, line) == 0) {
+            if (_stricmp(f.name, line) == 0) {
                 free(line);
                 line = (char * ) malloc(sizeof(char));
                 //read old data of recently edited form and skip it
@@ -477,7 +477,7 @@ void save_edited_form(Form f) {
                         line = (char * ) realloc(line, i * sizeof(char));
                         line[i - 2] = '\0';
                         i = 1;
-                        if (strcmpi("$$$", line) == 0) {
+                        if (_stricmp("$$$", line) == 0) {
                             free(line);
                             line = (char * ) malloc(sizeof(char));
                             break;
@@ -520,7 +520,7 @@ void edit_form(Form f) {
     while (1) {
         printf("> add | edit | remove | cancel | save:");
         read_command(command);
-        if (strcmpi(command, "edit") == 0 || strcmpi(command, "remove") == 0) {
+        if (_stricmp(command, "edit") == 0 || _stricmp(command, "remove") == 0) {
             int i = 0;
             //loop on forms components .
             while (1) {
@@ -540,7 +540,7 @@ void edit_form(Form f) {
                 printf("command> edit | next | previous | remove | cancel | save :");
                 read_command(command);
                 //edit current component
-                if (strcmpi(command, "edit") == 0) {
+                if (_stricmp(command, "edit") == 0) {
                     print_view(f, 1);
                     printf("\nx:");
                     scanf("%d", & f.components[i].x);
@@ -571,9 +571,9 @@ void edit_form(Form f) {
                             getchar();
                         printf("command> cancel | save :");
                         read_command(command);
-                        if (strcmpi(command, "cancel") == 0) {
+                        if (_stricmp(command, "cancel") == 0) {
                             break;
-                        } else if (strcmpi(command, "save") == 0) {
+                        } else if (_stricmp(command, "save") == 0) {
                             save_edited_form(f);
                             print_view(f, 1);
                             printf("Edit saved!\n");
@@ -582,30 +582,30 @@ void edit_form(Form f) {
                     }
                 }
                     //remove current component
-                else if (strcmpi(command, "remove") == 0) {
+                else if (_stricmp(command, "remove") == 0) {
                     for (int j = i; j < f.number_of_components - 1; j++) {
                         f.components[j] = f.components[j + 1];
                     }
                     f.number_of_components--;
                 }
                     //go to next component
-                else if (strcmpi(command, "next") == 0) {
+                else if (_stricmp(command, "next") == 0) {
                     print_view(f, 1);
                     i = (i + 1) % f.number_of_components;
                 }
                     //go to previous component
-                else if (strcmpi(command, "previous") == 0) {
+                else if (_stricmp(command, "previous") == 0) {
                     print_view(f, 1);
                     i--;
                     if (i < 0)
                         i = f.number_of_components - 1;
                 }
                     //go to previous menu
-                else if (strcmpi(command, "cancel") == 0) {
+                else if (_stricmp(command, "cancel") == 0) {
                     break;
                 }
                     //save edited form using save_edited_form() function.
-                else if (strcmpi(command, "save") == 0) {
+                else if (_stricmp(command, "save") == 0) {
                     save_edited_form(f);
                     print_view(f, 1);
                     printf("Edit saved!\n");
@@ -615,22 +615,22 @@ void edit_form(Form f) {
             }
         }
             //add a new component to form using create_form() function.
-        else if (strcmpi(command, "add") == 0) {
+        else if (_stricmp(command, "add") == 0) {
             printf("> component type (label | textbox | button):");
             read_command(command);
             f.number_of_components++;
             f.components = (Component * ) realloc(f.components, f.number_of_components * \
         sizeof(Component));
             Component c;
-            if (strcmpi(command, "textbox") == 0) {
+            if (_stricmp(command, "textbox") == 0) {
                 c = create_component('t');
                 f.components[f.number_of_components - 1] = c;
                 print_view(f, 1);
-            } else if (strcmpi(command, "label") == 0) {
+            } else if (_stricmp(command, "label") == 0) {
                 c = create_component('l');
                 f.components[f.number_of_components - 1] = c;
                 print_view(f, 1);
-            } else if (strcmpi(command, "button") == 0) {
+            } else if (_stricmp(command, "button") == 0) {
                 c = create_component('b');
                 f.components[f.number_of_components - 1] = c;
                 print_view(f, 1);
@@ -640,13 +640,13 @@ void edit_form(Form f) {
             print_view(f, 1);
         }
             //save edited form using save_edited_form() function
-        else if (strcmpi(command, "save") == 0) {
+        else if (_stricmp(command, "save") == 0) {
             save_edited_form(f);
             print_view(f, 1);
             break;
         }
             //return to run or edit menu
-        else if (strcmpi(command, "cancel") == 0) {
+        else if (_stricmp(command, "cancel") == 0) {
             break;
         }
     }
@@ -818,7 +818,7 @@ void find_forms(Form f) {
     //return to previous menu if no forms matched .
     if (number_of_forms == 0) {
         printf("No forms found!\n");
-        getch();
+        _getch();
         return;
     }
     //loop through matched forms .
@@ -827,7 +827,7 @@ void find_forms(Form f) {
         printf("form %d of %d \n> edit | remove | next | previous | cancel :", k + 1, number_of_forms);
         read_command(command);
         //edit current form data (textboxes).
-        if (strcmpi(command, "edit") == 0) {
+        if (_stricmp(command, "edit") == 0) {
             int i = 0;
             bool form_with_textbox = true;
             //check if current form contains any textbox.
@@ -835,7 +835,7 @@ void find_forms(Form f) {
                 i = (i + 1);
                 if (i == forms[k].number_of_components) {
                     printf("No textbox in form!\n");
-                    getch();
+                    _getch();
                     form_with_textbox = false;
                     break;
                 }
@@ -858,7 +858,7 @@ void find_forms(Form f) {
                 printf("Command> edit | next | previous | ok | exit :");
                 read_command(command);
                 //edit current component (textbox) of current form .
-                if (strcmpi(command, "edit") == 0) {
+                if (_stricmp(command, "edit") == 0) {
                     p = fopen(name, "a+");
                     FILE * t = fopen("temp.txt", "w+");
                     fseek(p, 0, SEEK_SET);
@@ -1044,18 +1044,18 @@ void find_forms(Form f) {
                     fclose(t);
                 }
                     //go to next component of current form
-                else if (strcmpi(command, "next") == 0) {
+                else if (_stricmp(command, "next") == 0) {
                     i = (i + 1) % forms[k].number_of_components;
                 }
                     //go to previous component of current form
-                else if (strcmpi(command, "previous") == 0) {
+                else if (_stricmp(command, "previous") == 0) {
                     i--;
                     if (i < 0) {
                         i = forms[k].number_of_components - 1;
                     }
                 }
                     //save edited form in related file
-                else if (strcmpi(command, "ok") == 0) {
+                else if (_stricmp(command, "ok") == 0) {
                     remove(name);
                     rename("temp.txt", name);
                     if (k >= number_of_forms - 1)
@@ -1067,7 +1067,7 @@ void find_forms(Form f) {
                     break;
                 }
                     //return to find menu
-                else if (strcmpi(command, "exit") == 0) {
+                else if (_stricmp(command, "exit") == 0) {
                     FILE * file;
                     if ((file = fopen("temp.txt", "r"))) {
                         fclose(file);
@@ -1080,7 +1080,7 @@ void find_forms(Form f) {
             }
         }
             //remove current matched form
-        else if (strcmpi(command, "remove") == 0) {
+        else if (_stricmp(command, "remove") == 0) {
             p = fopen(name, "a+");
             FILE * t = fopen("temp.txt", "w+");
             fseek(p, 0, SEEK_SET);
@@ -1231,18 +1231,18 @@ void find_forms(Form f) {
             number_of_forms--;
         }
             //go to next matched form
-        else if (strcmpi(command, "next") == 0) {
+        else if (_stricmp(command, "next") == 0) {
             k = (k + 1) % number_of_forms;
         }
             //go to previous matched form
-        else if (strcmpi(command, "previous") == 0) {
+        else if (_stricmp(command, "previous") == 0) {
             k--;
             if (k < 0) {
                 k = number_of_forms - 1;
             }
         }
             //go to run or edit menu
-        else if (strcmpi(command, "cancel") == 0) {
+        else if (_stricmp(command, "cancel") == 0) {
             break;
         }
     }
@@ -1258,7 +1258,7 @@ void run_form(Form f) {
         i = (i + 1);
         if (i == f.number_of_components) {
             printf("No textbox in form!\n");
-            getch();
+            _getch();
             form_with_textbox = false;
             break;
         }
@@ -1283,16 +1283,16 @@ void run_form(Form f) {
         printf("Command> add | find | fill | next | previous | exit :");
         read_command(command);
         //save filled form using save_form_data() function.
-        if (strcmpi(command, "add") == 0) {
+        if (_stricmp(command, "add") == 0) {
             save_form_data(f);
             printf("Form added!\n");
         }
             //search for forms similar to filled form using find_forms() function.
-        else if (strcmpi(command, "find") == 0) {
+        else if (_stricmp(command, "find") == 0) {
             find_forms(f);
         }
             //fill data of current component (textbox) of the form.
-        else if (strcmpi(command, "fill") == 0) {
+        else if (_stricmp(command, "fill") == 0) {
             printf(">value:");
             free(f.components[i].value);
             f.components[i].value = (char * ) malloc(sizeof(char));
@@ -1308,18 +1308,18 @@ void run_form(Form f) {
             f.components[i].value[j - 1] = '\0';
         }
             //go to next component (textbox) of the form
-        else if (strcmpi(command, "next") == 0) {
+        else if (_stricmp(command, "next") == 0) {
             i = (i + 1) % f.number_of_components;
         }
             //go to previous component (textbox) of the form
-        else if (strcmpi(command, "previous") == 0) {
+        else if (_stricmp(command, "previous") == 0) {
             i--;
             if (i < 0) {
                 i = f.number_of_components - 1;
             }
         }
             //return to run | edit menu.
-        else if (strcmpi(command, "exit") == 0) {
+        else if (_stricmp(command, "exit") == 0) {
             return;
         }
     }
@@ -1334,10 +1334,10 @@ int main() {
         printf("create | load | exit:");
         //input command
         read_command(command);
-        if (strcmpi(command, "exit") != 0) {
+        if (_stricmp(command, "exit") != 0) {
             print_view(f, 1);
         }
-        if (strcmpi(command, "create") == 0) {
+        if (_stricmp(command, "create") == 0) {
             f.components = (Component * ) malloc(sizeof(Component));
             //loop until cancel is clicked & create components.
             while (1) {
@@ -1363,7 +1363,7 @@ int main() {
                 }
                 subcommand1 = (char * ) realloc(subcommand1, i * sizeof(char));
                 subcommand1[i - 1] = '\0';
-                if (strcmpi(subcommand1, "create") == 0) {
+                if (_stricmp(subcommand1, "create") == 0) {
                     free(subcommand1);
                     subcommand1 = (char * ) malloc(sizeof(char));
                     int j = 1;
@@ -1378,7 +1378,7 @@ int main() {
                     subcommand1[j - 1] = '\0';
                     Component c;
                     //create a component by inputting data.
-                    if (strcmpi(subcommand1, "textbox") == 0) {
+                    if (_stricmp(subcommand1, "textbox") == 0) {
                         free(subcommand1);
                         c = create_component('t');
                         f.components[f.number_of_components] = c;
@@ -1386,7 +1386,7 @@ int main() {
                         f.components = (Component * ) realloc(f.components, (f.number_of_components + 1) *
                                                                             sizeof(Component));
                         print_view(f, 1);
-                    } else if (strcmpi(subcommand1, "label") == 0) {
+                    } else if (_stricmp(subcommand1, "label") == 0) {
                         free(subcommand1);
                         c = create_component('l');
                         f.components[f.number_of_components] = c;
@@ -1394,7 +1394,7 @@ int main() {
                         f.components = (Component * ) realloc(f.components, (f.number_of_components + 1) *
                                                                             sizeof(Component));
                         print_view(f, 1);
-                    } else if (strcmpi(subcommand1, "button") == 0) {
+                    } else if (_stricmp(subcommand1, "button") == 0) {
                         free(subcommand1);
                         c = create_component('b');
                         f.components[f.number_of_components] = c;
@@ -1408,21 +1408,21 @@ int main() {
                     }
                 }
                     //call save_form() function to save a form if save is clicked .
-                else if (strcmpi(subcommand1, "save") == 0) {
+                else if (_stricmp(subcommand1, "save") == 0) {
                     free(subcommand1);
                     printf("Enter form name: ");
                     save_form(f);
                     break;
                 }
                     //return to create or load menu without saving the created form.
-                else if (strcmpi(subcommand1, "cancel") == 0) {
+                else if (_stricmp(subcommand1, "cancel") == 0) {
                     free(subcommand1);
                     break;
                 }
             }
         }
             //load a form using inputted form name by calling load_form() function if load is clicked
-        else if (strcmpi(command, "load") == 0) {
+        else if (_stricmp(command, "load") == 0) {
             printf("Enter form name: ");
             f = load_form();
             free(command);
@@ -1442,17 +1442,17 @@ int main() {
                 command = (char * ) realloc(command, i * sizeof(char));
                 command[i - 1] = '\0';
                 //run loaded form by calling run_form() function if run is clicked .
-                if (strcmpi(command, "run") == 0) {
+                if (_stricmp(command, "run") == 0) {
                     free(command);
                     run_form(f);
                 }
                     //edit loaded form by calling edit_form() function if edit is clicked .
-                else if (strcmpi(command, "edit") == 0) {
+                else if (_stricmp(command, "edit") == 0) {
                     free(command);
                     edit_form(f);
                 }
                     //return to create or load menu .
-                else if (strcmpi(command, "cancel") == 0) {
+                else if (_stricmp(command, "cancel") == 0) {
                     free(command);
                     command = (char * ) malloc(7 * sizeof(char));
                     break;
@@ -1463,7 +1463,7 @@ int main() {
             }
         }
             //exit program if exit is clicked.
-        else if (strcmpi(command, "exit") == 0) {
+        else if (_stricmp(command, "exit") == 0) {
             free(command);
             break;
         } else {
